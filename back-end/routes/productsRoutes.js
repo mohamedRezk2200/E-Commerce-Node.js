@@ -1,0 +1,12 @@
+import express from 'express';
+import { upload } from '../utlis/multerConfig.js';
+import { productsController } from '../controllers/products.controller.js';
+import { verifyAdmin } from '../auth/jwt.verifyAdmin.js';
+const router = express.Router();
+router.route('/').get(productsController.getAllProducts);
+router.route('/addProduct').post(verifyAdmin, upload.single('image'), productsController.addProduct);
+router.route('/updateProduct/:id').put(verifyAdmin, productsController.updateProduct);
+router.route('/upload-product-images/:id').put(verifyAdmin, upload.array('images', 5), productsController.uploadProductGallety);
+router.route('/deleteProduct/:id').delete(verifyAdmin, productsController.deleteProduct);
+router.route('/:id').get(productsController.getProduct);
+export const productsRoutes = router;

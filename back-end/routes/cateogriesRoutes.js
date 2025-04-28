@@ -1,0 +1,11 @@
+import express from 'express';
+import { verifyAdmin } from '../auth/jwt.verifyAdmin.js';
+import { verifyUser } from '../auth/jwt.verifyUser.js';
+import { categoriesController } from '../controllers/categories.controller.js';
+const router = express.Router();
+router.route('/').get(verifyUser, categoriesController.getAllCategories);
+router.route('/addCategory').post(verifyAdmin, categoriesController.addCategory);
+router.route('/updateCategory/:id').put(verifyAdmin, categoriesController.updateCategory);
+router.route('/deleteCategory/:id').delete(verifyAdmin, categoriesController.deleteCategory);
+router.route('/:id').get(verifyUser, categoriesController.getCategory);
+export const categoriesRoutes = router;
